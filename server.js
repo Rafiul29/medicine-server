@@ -11,6 +11,7 @@ dotenv.config()
 const dbConnect=require("./config/dbConnect")
 const userRouter=require("./routes/user.route")
 // const productRouter=require("./routes/productRoutes")
+const {globalErrorHandler,notFound}=require("./middlewares/globalErrorHandler")
 
 
 // express app
@@ -26,6 +27,15 @@ app.use(morgan("dev"));
 
 // bypass url
 app.use("/api/users",userRouter)
+
+
+
+
+// not found
+app.use(notFound);
+// error middleware
+app.use(globalErrorHandler)
+
 
 
 

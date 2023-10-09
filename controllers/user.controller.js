@@ -1,9 +1,11 @@
 const User = require("../models/user.Model");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
+const asyncHander=require("express-async-handler")
 
-const registerUser = async (req, res) => {
-  try {
+
+const registerUser = asyncHander(async (req, res) => {
+  // try {
     const { fullname, email, password } = req.body;
 
     if(!fullname||!email||!password){
@@ -41,28 +43,29 @@ const registerUser = async (req, res) => {
       message: "User registered Successfully",
       data: user,
     });
-  } catch (error) {
-    res.status(404).json({
-      msg: error.message,
-    });
-  }
-};
+  // } catch (error) {
+  //   res.status(404).json({
+  //     msg: error.message,
+  //   });
+  // }
+})
 
-const loginUser = async (req, res) => {
-  try {
+const loginUser = asyncHander(async (req, res) => {
+  // try {
     const {email,password}=req.body;
 
-    if(!email||!password){
+    if(!email || !password){
       throw new Error("Must  fill email and password")
     }
 
-    const user=await User.findOne({email})
+// find the user in db by email only
+    const userFound=await User.findOne({email})
 
-    if(!user){
+    if(!userFound){
       throw new Error("Incorrect email or password");
     }
 
-    const match=await bcrypt.compare(password,user.password);
+    const match=await bcrypt.compare(password,userFound.password);
 
     if(!match){
       throw new Error("Incorrect email or password");
@@ -71,15 +74,15 @@ const loginUser = async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "User login Successfully",
-      data: user,
+      data: userFound,
     })
 
-  } catch (error) {
-    res.status(404).json({
-      msg: error.message,
-    });
-  }
-};
+  // } catch (error) {
+  //   res.status(404).json({
+  //     msg: error.message,
+  //   });
+  // }
+})
 
 module.exports = {
   registerUser,
