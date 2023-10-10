@@ -2,8 +2,8 @@
 const express=require('express');
 
 // internal import
-const { registerUser,loginUser } = require('../controllers/user.controller');
-
+const { registerUser,loginUser,getUserProfile } = require('../controllers/user.controller');
+const isloggedIn=require("../middlewares/isLoggedIn")
 
 //router
 const router=express.Router();
@@ -14,4 +14,6 @@ router.post("/register",registerUser)
 //login an user
 router.post('/login',loginUser);
 
+// user profile
+router.get("/profile",isloggedIn,getUserProfile)
 module.exports=router;

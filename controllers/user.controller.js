@@ -1,11 +1,13 @@
 const User = require("../models/user.Model");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
-const asyncHander=require("express-async-handler")
-
+const asyncHander=require("express-async-handler");
+const { generateToken } = require("../utils/generateToken");
+const { getTokenFromHeader } = require("../utils/getTokenFromHeader");
+const {verifyToken}=require("../utils/verifyToken")
 
 const registerUser = asyncHander(async (req, res) => {
-  // try {
+
     const { fullname, email, password } = req.body;
 
     if(!fullname||!email||!password){
@@ -43,15 +45,11 @@ const registerUser = asyncHander(async (req, res) => {
       message: "User registered Successfully",
       data: user,
     });
-  // } catch (error) {
-  //   res.status(404).json({
-  //     msg: error.message,
-  //   });
-  // }
+ 
 })
 
 const loginUser = asyncHander(async (req, res) => {
-  // try {
+ 
     const {email,password}=req.body;
 
     if(!email || !password){
@@ -74,17 +72,24 @@ const loginUser = asyncHander(async (req, res) => {
     res.status(201).json({
       status: "success",
       message: "User login Successfully",
-      data: userFound,
+      userFound,
+      token:generateToken(userFound?._id)
     })
-
-  // } catch (error) {
-  //   res.status(404).json({
-  //     msg: error.message,
-  //   });
-  // }
 })
+
+
+const getUserProfile=asyncHander(async(req,res)=>{
+
+console.log(req.userAuthId)
+
+  res.json({
+    msg:"Welcome to profile page"
+  })
+})
+
 
 module.exports = {
   registerUser,
-  loginUser
+  loginUser,
+  getUserProfile
 };
