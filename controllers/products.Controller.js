@@ -3,6 +3,7 @@ const asyncHandler = require("express-async-handler");
 
 // internal import
 const Product = require("../models/product.model");
+const Category = require("../models/category.model");
 
 // create a new product
 // @route POST /api/products/
@@ -22,11 +23,12 @@ const createProduct = asyncHandler(async (req, res) => {
 
   // productExists
   const productExists = await Product.findOne({ name });
+
   if (productExists) {
     throw new Error("Product Already Exists");
   }
 
-  // create the product
+  
   const product = await Product.create({
     name,
     description,
@@ -39,6 +41,21 @@ const createProduct = asyncHandler(async (req, res) => {
     brand,
   });
   // push the prodcut into category
+  // find the category
+  const categoryFound=await Category.findOne({
+    name:category,
+  })
+
+  if(!categoryFound){
+    throw new Error("Category not found, please create category first ir check category name")
+  }
+
+  // push the product the category
+  categoryFound.products.push(product._id);
+  // resave
+  await categoryFound.save();
+  // create the product
+  
   // send response
   res.json({
     status: "success",
@@ -131,7 +148,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
   }
 
   // await the query
-  const products = await productQuery;
+  const products = await productQuery
 
   res.json({
     status: "success",
@@ -148,7 +165,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
 //access public
 const getSingleProduct = asyncHandler(async (req, res) => {
   const id = req.params.id;
-  const product = await Product.findById({ _id: id });
+  const product = await Product.findById({ _id: id })
   if (!product) {
     throw new Error("Product not found");
   }
@@ -163,7 +180,7 @@ const getSingleProduct = asyncHandler(async (req, res) => {
 //@desc update single product
 // @route PUT /api/products/:id
 //access privet/Admin
-const updateSigleProduct = asyncHandler(async (req, res) => {
+const updateSingleProduct = asyncHandler(async (req, res) => {
   const {
     name,
     description,
@@ -208,7 +225,7 @@ const updateSigleProduct = asyncHandler(async (req, res) => {
 //@desc delete single product
 // @route DELETE /api/products/:id
 //access privet/Admin
-const deleteSigleProduct=asyncHandler(async(req,res)=>{
+const deleteSingleProduct=asyncHandler(async(req,res)=>{
   const id = req.params.id;
   console.log(id)
     const product=await Product.findByIdAndDelete({_id:id});
@@ -224,6 +241,6 @@ module.exports = {
   createProduct,
   getAllProducts,
   getSingleProduct,
-  updateSigleProduct,
-  deleteSigleProduct
+  updateSingleProduct,
+  deleteSingleProduct
 };

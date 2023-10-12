@@ -2,8 +2,9 @@
 const express=require('express');
 
 // internal import
+const {createProduct,getAllProducts,getSingleProduct,updateSingleProduct,deleteSingleProduct}=require("../controllers/products.Controller")
 const isloggedIn=require("../middlewares/isLoggedIn")
-const {createProduct,getAllProducts,getSingleProduct,updateSigleProduct,deleteSigleProduct}=require("../controllers/products.Controller")
+const isAdmin=require("../middlewares/isAdmin")
 //router
 const router=express.Router();
 
@@ -12,15 +13,15 @@ const router=express.Router();
 router.post("/",isloggedIn,createProduct);
 
 // get all products
-router.get("/",getAllProducts);
+router.get("/",isloggedIn, isAdmin, getAllProducts);
 
 // get single product
 router.get("/:id",getSingleProduct)
 
 // update single product
-router.put("/:id",isloggedIn,updateSigleProduct);
+router.put("/:id",isloggedIn,updateSingleProduct);
 
 //delete single product
-router.delete("/:id",isloggedIn,deleteSigleProduct);
+router.delete("/:id",isloggedIn,deleteSingleProduct);
 
 module.exports=router
