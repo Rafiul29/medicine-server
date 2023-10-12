@@ -2,7 +2,7 @@
 const express=require('express');
 
 // internal import
-const { registerUser,loginUser,getUserProfile } = require('../controllers/user.controller');
+const { registerUser,loginUser,getUserProfile } = require('../controllers/users.controller');
 const isloggedIn=require("../middlewares/isLoggedIn")
 
 //router

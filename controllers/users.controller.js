@@ -80,10 +80,13 @@ const loginUser = asyncHander(async (req, res) => {
 
 const getUserProfile=asyncHander(async(req,res)=>{
 
-console.log(req.userAuthId)
+const id=req.userAuthId
+const user =await User.findById({_id:id})
+console.log(user)
 
   res.json({
-    msg:"Welcome to profile page"
+    msg:"Welcome to profile page",
+    user,
   })
 })
 

@@ -10,7 +10,7 @@ dotenv.config()
 // internal import
 const dbConnect=require("./config/dbConnect")
 const userRouter=require("./routes/user.route")
-// const productRouter=require("./routes/productRoutes")
+const productRouter=require("./routes/products.Routes")
 const {globalErrorHandler,notFound}=require("./middlewares/globalErrorHandler")
 
 
@@ -27,8 +27,7 @@ app.use(morgan("dev"));
 
 // bypass url
 app.use("/api/users",userRouter)
-
-
+app.use("/api/products",productRouter);
 
 
 // not found
