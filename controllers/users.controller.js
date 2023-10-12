@@ -1,12 +1,12 @@
 const User = require("../models/user.Model");
 const validator = require("validator");
 const bcrypt = require("bcrypt");
-const asyncHander=require("express-async-handler");
+const asyncHandler=require("express-async-handler");
 const { generateToken } = require("../utils/generateToken");
 const { getTokenFromHeader } = require("../utils/getTokenFromHeader");
 const {verifyToken}=require("../utils/verifyToken")
 
-const registerUser = asyncHander(async (req, res) => {
+const registerUser = asyncHandler(async (req, res) => {
 
     const { fullname, email, password } = req.body;
 
@@ -48,7 +48,7 @@ const registerUser = asyncHander(async (req, res) => {
  
 })
 
-const loginUser = asyncHander(async (req, res) => {
+const loginUser = asyncHandler(async (req, res) => {
  
     const {email,password}=req.body;
 
@@ -78,7 +78,7 @@ const loginUser = asyncHander(async (req, res) => {
 })
 
 
-const getUserProfile=asyncHander(async(req,res)=>{
+const getUserProfile=asyncHandler(async(req,res)=>{
 
 const id=req.userAuthId
 const user =await User.findById({_id:id})
@@ -90,9 +90,8 @@ console.log(user)
   })
 })
 
-
 module.exports = {
   registerUser,
   loginUser,
-  getUserProfile
+  getUserProfile,
 };

@@ -2,7 +2,7 @@
 const express=require('express');
 
 // internal import
-const { registerUser,loginUser,getUserProfile } = require('../controllers/users.controller');
+const { registerUser,loginUser,getUserProfile} = require('../controllers/users.controller');
 const isloggedIn=require("../middlewares/isLoggedIn")
 
 //router
@@ -16,4 +16,5 @@ router.post('/login',loginUser);
 
 // user profile
 router.get("/profile",isloggedIn,getUserProfile)
+
 module.exports=router;

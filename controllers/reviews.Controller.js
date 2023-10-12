@@ -12,12 +12,12 @@ const createReview = asyncHandler(async (req, res) => {
   // 1.find the product
   const { productId } = req.params;
   const productFound = await Product.findById(productId);
-  
+
   if (!productFound) {
     throw new Error("Product Not found");
   }
   // check if user already reiviewed this product
-  console.log(productFound)
+
     const hasReviewed=productFound?.reviews?.find((review)=>{
       console.log(String(review?.user))
       // return review?.user==req?.userAuthId
@@ -31,8 +31,8 @@ const createReview = asyncHandler(async (req, res) => {
     product: productFound._id,
     user: req.userAuthId,
   });
-
-  productFound.reviews.push(review?._id);
+console.log(review)
+  productFound.reviews.push({review});
   await productFound.save();
 
   res.status(201).json({
