@@ -15,10 +15,10 @@ const categorySchema = new mongoose.Schema({
     default: "https://picsum.photos/200/300",
     required: true,
   },
-  products: [
+  medicines: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Product",
+      ref: "Medicine",
     },
   ],
 },{timestamps:true});

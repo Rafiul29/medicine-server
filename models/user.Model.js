@@ -31,38 +31,8 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-    hasShipingAddress: {
-      type: Boolean,
-      default: false,
-    },
-    shippingAddress: {
-      firstName: {
-        type: String,
-      },
-      lastName: {
-        type: String,
-      },
-      address: {
-        type: String,
-      },
-      city: {
-        type: String,
-      },
-      postalCode: {
-        type: String,
-      },
-      provience: {
-        type: String,
-      },
-      country: {
-        type: String,
-      },
-      phone: {
-        type: String,
-      },
-    },
   },
-  { timeStamp: true }
+  { timestamps: true }
 );
 
 // compile the schema to model

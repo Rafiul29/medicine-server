@@ -1,39 +1,43 @@
 const asyncHandler = require("express-async-handler");
 const Review = require("../models/review.model");
-const Product = require("../models/product.model");
+const Medicine = require("../models/medicine.model");
 
 // create a new product
 // @route POST /api/reviews/
 // access privet/Admin
 
 const createReview = asyncHandler(async (req, res) => {
-  const { product, message, rating } = req.body;
+  const { medicine, message, rating } = req.body;
 
   // 1.find the product
   const { productId } = req.params;
-  const productFound = await Product.findById(productId);
+  const medicineFound = await Medicine.findById(productId).populate("reviews");
 
-  if (!productFound) {
+  console.log(medicineFound)
+  if (!medicineFound) {
     throw new Error("Product Not found");
   }
   // check if user already reiviewed this product
 
-    const hasReviewed=productFound?.reviews?.find((review)=>{
+    const hasReviewed=medicineFound?.reviews?.find((review)=>{
       console.log(String(review?.user))
-      // return review?.user==req?.userAuthId
+      return review?.user.toString()==req?.userAuthId.toString()
     })
-  
+    
+  if(hasReviewed){
+    throw new Error("Already reviews")
+  }
 
   // create review
   const review = await Review.create({
     message,
     rating,
-    product: productFound._id,
+    medicine: medicineFound._id,
     user: req.userAuthId,
   });
-console.log(review)
-  productFound.reviews.push({review});
-  await productFound.save();
+  
+  medicineFound.reviews.push({...review});
+  await medicineFound.save();
 
   res.status(201).json({
     success:true,

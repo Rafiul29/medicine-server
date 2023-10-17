@@ -33,7 +33,7 @@ const registerUser = asyncHandler(async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     // hash password
     const hash = await bcrypt.hash(password, salt);
-    console.log(hash);
+  
     // create the user
     const user = await User.create({
       fullname,
@@ -81,8 +81,8 @@ const loginUser = asyncHandler(async (req, res) => {
 const getUserProfile=asyncHandler(async(req,res)=>{
 
 const id=req.userAuthId
+
 const user =await User.findById({_id:id})
-console.log(user)
 
   res.json({
     msg:"Welcome to profile page",

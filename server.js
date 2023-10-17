@@ -9,7 +9,7 @@ dotenv.config();
 // internal import
 const dbConnect = require("./config/dbConnect");
 const usersRouter = require("./routes/users.route");
-const productRouter = require("./routes/products.Routes");
+const medicineRouter = require("./routes/medicines.Routes");
 const categoriesRouter = require("./routes/categories.Router.js");
 const reviewRouter = require("./routes/review.Routes");
 const {
@@ -29,7 +29,7 @@ app.use(morgan("dev"));
 
 // bypass url
 app.use("/api/users", usersRouter);
-app.use("/api/products", productRouter);
+app.use("/api/medicines", medicineRouter);
 app.use("/api/categories", categoriesRouter);
 app.use("/api/reviews", reviewRouter);
 
