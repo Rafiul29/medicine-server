@@ -2,7 +2,7 @@
 const express=require('express');
 
 // internal import
-const {createMedicine,getAllMedicines,getSingleMedicine,updateSingleMedicine,deleteSingleMedicine}=require("../controllers/medicine.Controller")
+const {createMedicine,getAllMedicines,getSingleMedicine,updateSingleMedicine,deleteSingleMedicine}=require("../controllers/medicine.controller")
 const isloggedIn=require("../middlewares/isLoggedIn")
 const isAdmin=require("../middlewares/isAdmin")
 //router

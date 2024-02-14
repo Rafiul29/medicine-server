@@ -64,10 +64,11 @@ console.log(req.userAuthId)
 // @route GET /api/Medicines/
 //access public
 const getAllMedicines = asyncHandler(async (req, res) => {
-  // query
+  try{
+    // query
   let medicineQuery = Medicine.find();
 
-  console.log(req.query.name)
+
   // search by name
   if (req.query.name) {
     medicineQuery = medicineQuery.find({
@@ -82,64 +83,20 @@ const getAllMedicines = asyncHandler(async (req, res) => {
       category: { $regex: req.query.category, $options: "i" },
     });
   }
-
   
-
-
-  // filter by price range
-  if (req.query.price) {
-    const priceRange = req.query.price.split("-");
-    console.log(priceRange);
-    //  gte:grether or equal
-    //  lte: less or equal
-    medicineQuery = medicineQuery.find({
-      price: { $gte: priceRange[0], $lte: priceRange[1] },
-    });
-  }
-
-
-  // pagination
-  // page
-  const page = parseInt(req.query.page) ? parseInt(req.query.page) : 1;
-
-  // limit
-  const limit = parseInt(req.query.limit) ? parseInt(req.query.limit) : 10;
-
-  // startindex
-  const startIndex = (page - 1) * limit;
-
-  //endIndex
-  const endIndex = page * limit;
-  // total
-  const total = await Medicine.countDocuments();
-
-  medicineQuery = medicineQuery.skip(startIndex).limit(limit);
-
-  // pagination results
-  const pagination = {};
-  if (endIndex < total) {
-    pagination.next = {
-      page: page + 1,
-    };
-    if (startIndex > 0) {
-      pagination.prev = {
-        page: page - 1,
-        limit,
-      };
-    }
-  }
-
   // await the query
-  const medicines = await medicineQuery.populate('reviews')
+  const medicines = await medicineQuery
 
   res.json({
     status: "success",
-    total,
-    pagination,
     result: medicines.length,
     message: "Medicines fetch successfully",
     medicines,
   });
+
+  }catch(err){
+    res.json({message:err.message})
+  }
 });
 
 //@desc get single Medicine
@@ -204,7 +161,7 @@ const updateSingleMedicine = asyncHandler(async (req, res) => {
 //access privet/Admin
 const deleteSingleMedicine=asyncHandler(async(req,res)=>{
   const id = req.params.id;
-  console.log(id)
+
     const medicine=await Medicine.findByIdAndDelete({_id:id});
 
     res.json({

@@ -11,6 +11,8 @@ const dbConnect = require("./config/dbConnect");
 const usersRouter = require("./routes/users.route");
 const medicineRouter = require("./routes/medicines.Routes");
 const categoriesRouter = require("./routes/categories.Router.js");
+const ordersRoutes =require("./routes/orders.routes.js");
+
 const reviewRouter = require("./routes/review.Routes");
 const {
   globalErrorHandler,
@@ -31,6 +33,7 @@ app.use(morgan("dev"));
 app.use("/api/users", usersRouter);
 app.use("/api/medicines", medicineRouter);
 app.use("/api/categories", categoriesRouter);
+app.use("/api/orders",ordersRoutes)
 app.use("/api/reviews", reviewRouter);
 
 

@@ -3,7 +3,7 @@ const express=require('express');
 
 // internal import
 const isloggedIn=require("../middlewares/isLoggedIn")
-const {createCategory,getAllCategory,getSingleCategory,updateSingleCategory,deleteSingleCategory}=require("../controllers/category.Controller")
+const {createCategory,getAllCategory,getSingleCategory,updateSingleCategory,deleteSingleCategory}=require("../controllers/category.controller")
 
 //router
 const router=express.Router();

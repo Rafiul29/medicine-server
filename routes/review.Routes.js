@@ -3,7 +3,7 @@ const express=require('express');
 
 // internal import
 const isloggedIn=require("../middlewares/isLoggedIn");
-const { createReview } = require('../controllers/reviews.Controller');
+const { createReview } = require('../controllers/reviews.controller');
 
 
 //router
