@@ -13,10 +13,10 @@ const isAdmin = require("../middlewares/isAdmin");
 const router = express.Router();
 
 // create a new order
-router.post("/", createOrder);
+router.post("/", isloggedIn, createOrder);
 
 //login an user
-router.post("/all", isloggedIn, isAdmin, getAllOrders);
+router.get("/all", isloggedIn, isAdmin, getAllOrders);
 
 // user profile
 router.get("/user", isloggedIn, getUserOrders);

@@ -22,18 +22,29 @@ const orderSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      required: true,
+    user:{
+      type:mongoose.Schema.Types.ObjectId,
+      required:true,
+      ref:"User",
     },
     medicines: [
       {
         type: mongoose.Schema.Types.ObjectId,
         ref: "Medicine",
-        required: true,
       },
     ],
+    total_amount:{
+      type:Number,
+      required:true,
+    },
+    payment_status:{
+      type:String,
+      default:"paid"
+    },
+    delivery_status:{
+      type:String,
+      default:"pending"
+    }
   },
   { timestamps: true }
 );

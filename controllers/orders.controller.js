@@ -2,62 +2,67 @@
 const asyncHandler = require("express-async-handler");
 
 // internal import
-const Category = require("../models/category.model");
 const Order = require("../models/orders.model");
+const User = require("../models/user.Model");
 
-// @desc create new category
-//@route POST /api/categories
-//@ access Privet/Admin
-
+//@ access Public/all
 const createOrder = asyncHandler(async (req, res) => {
-  const { name } = req.body;
-  // category exists
-  const categoryFound = await Order.findOne({ name });
-  console.log(categoryFound);
+  const { name, email, phoneNumber, city, address, medicines,total_amount } = req.body;
 
-  if (categoryFound) {
-    throw new Error("Category already exists1");
+  if (!name || !email || !phoneNumber || !city || !address) {
+    throw new Error("All fill must be filled");
   }
-
-  // create
-  const category = await Category.create({
+  const user = await User.findById({ _id: req.userAuthId });
+  // create a new order
+  const order = await Order.create({
     name,
+    email,
+    phoneNumber,
+    city,
+    address,
+    total_amount,
     user: req.userAuthId,
   });
+  
+  // order model midicines id push
+  medicines &&
+    medicines?.map((medicine) => order?.medicines?.push(medicine._id));
+  // save to the order model
+  await order.save();
+
+  // update  user model
+  user.orders.push(order?._id);
+  await user.save();
 
   res.json({
     status: "success",
-    message: "Category created successfully",
-    category,
+    message: "orders created successfully",
+    order,
   });
 });
 
-// @desc get all categories
-//@route GET /api/categories
-//@ access Public
-
+//@ access Private/Admin
 const getAllOrders = asyncHandler(async (req, res) => {
-  const categories = await Order.find({});
+  const allOrders = await Order.find({}).populate("medicines user");
 
   res.json({
     status: "success",
-    message: "Category fetched successfully",
-    categories,
+    message: "orders fetched successfully",
+    allOrders,
   });
 });
 
-// @desc get single categories
-//@route GET /api/categories/:id
-//@ access Public
-
+//@ access Public/authenticate user
 const getUserOrders = asyncHandler(async (req, res) => {
-  const id = req.params.id;
-  const category = await Order.findById({ _id: id });
+  const userId = req.userAuthId;
+  const userOrders = await Order.find({ user: req.userAuthId }).populate(
+    "user medicines"
+  );
 
   res.json({
     status: "success",
-    message: "Category fetch successfully",
-    category,
+    message: "order fetch successfully",
+    userOrders,
   });
 });
 
